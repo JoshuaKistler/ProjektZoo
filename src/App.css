@@ -5,6 +5,29 @@ body {
 
 .app {
   text-align: center;
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+}
+
+.imgs {
+  background-color: red;
+  width: 100vw;
+  height: 60%;
+  position: absolute;
+  top: 0;
+  z-index: 1; /* Sicherstellen, dass das Bild im Hintergrund bleibt */
+  background-size: cover;
+  background-position: center;
+}
+
+#root {
+  width: 100vw;
+  height: 100vh;
+}
+
+* {
+  z-index: 2;
 }
 
 .header {
@@ -15,6 +38,8 @@ body {
   background-color: #282c34;
   color: white;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  position: relative;
+  z-index: 3;
 }
 
 .title {
@@ -32,7 +57,7 @@ body {
 
 .parking-space {
   width: 180px;
-  height: 250px; /* Höhe geändert */
+  height: 250px;
   background-color: #e0e0e0;
   border: 2px solid #333;
   border-radius: 10px;
@@ -56,7 +81,7 @@ body {
 
 .parking-space.reserved {
   background-color: #ccffcc;
-  border-color: green ;
+  border-color: green;
 }
 
 .parking-space.selected {
