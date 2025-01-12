@@ -56,7 +56,7 @@ body {
 
 .parking-space.reserved {
   background-color: #ccffcc;
-  border-color: #cc0000;
+  border-color: green ;
 }
 
 .parking-space.selected {
