@@ -3,13 +3,13 @@ import "./App.css";
 
 const App = () => {
   const [selectedParkingSpace, setSelectedParkingSpace] = useState(null);
-  const [name, setName] = useState(""); // Zustand für den Namen
+  const [name, setName] = useState("");
   const [parkingSpaces, setParkingSpaces] = useState(
     Array.from({ length: 10 }, (_, index) => ({
       id: index + 1,
       isBooked: false,
       isReserved: false,
-      reservedBy: "", // Hinzugefügt, um den Namen des reservierenden Benutzers zu speichern
+      reservedBy: "",
     }))
   );
 
@@ -24,12 +24,12 @@ const App = () => {
       setParkingSpaces((prevSpaces) =>
         prevSpaces.map((space) =>
           space.id === selectedParkingSpace
-            ? { ...space, isReserved: true, reservedBy: name } // Reservierung mit Namen speichern
+            ? { ...space, isReserved: true, reservedBy: name } 
             : space
         )
       );
       setSelectedParkingSpace(null);
-      setName(""); // Nach der Reservierung den Namen zurücksetzen
+      setName("");
     } else {
       alert("Bitte geben Sie Ihren Namen ein.");
     }
@@ -43,7 +43,7 @@ const App = () => {
 
       <main className="content">
         <h2>Wählen Sie einen Parkplatz aus und klicken Sie auf 'Parkplatz reservieren'.</h2>
-        <p>Geben sie danach ihren Namen ein um den Parkplatz zu reservierens</p>
+        <p>Geben Sie danach Ihren Namen ein, um den Parkplatz zu reservieren.</p>
 
         <div className="parking-lot">
           {parkingSpaces.map((space) => (
@@ -60,8 +60,9 @@ const App = () => {
               }`}
               onClick={() => handleBooking(space.id)}
               style={{
-                cursor: space.isReserved ? "not-allowed" : "pointer", // Wenn reserviert, kein "pointer" Cursor
+                cursor: space.isReserved ? "not-allowed" : "pointer",
               }}
+              data-name={space.isReserved ? space.reservedBy : ""}
             >
               <div className="parking-icon">
                 <span>{space.id}</span>
@@ -71,7 +72,7 @@ const App = () => {
                   className="reserve-button"
                   onClick={(e) => {
                     e.stopPropagation();
-                    handleBooking(space.id); // Beim Klick wird der Parkplatz ausgewählt
+                    handleBooking(space.id);
                   }}
                 >
                   Buchen
@@ -87,7 +88,7 @@ const App = () => {
               type="text"
               placeholder="Geben Sie Ihren Namen ein"
               value={name}
-              onChange={(e) => setName(e.target.value)} // Eingabe des Namens
+              onChange={(e) => setName(e.target.value)} 
             />
             <button onClick={handleReservation}>Parkplatz reservieren</button>
           </div>
