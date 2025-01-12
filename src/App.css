@@ -12,7 +12,7 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 1rem 2rem;
-  background-color: #282c34;
+  background-color: black;
   color: white;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }

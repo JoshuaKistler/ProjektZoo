@@ -38,11 +38,12 @@ const App = () => {
   return (
     <div className="app">
       <header className="header">
-        <h1 className="title">Parkplatz-Reservierung</h1>
+        <h1 className="title">Zoo<span style={{color:"red"}}>h</span>! Parkplatz-Reservierung</h1>
       </header>
 
       <main className="content">
-        <h2>Wählen Sie einen Parkplatz aus und klicken Sie auf 'Buchen'.</h2>
+        <h2>Wählen Sie einen Parkplatz aus und klicken Sie auf 'Parkplatz reservieren'.</h2>
+        <p>Geben sie danach ihren Namen ein um den Parkplatz zu reservierens</p>
 
         <div className="parking-lot">
           {parkingSpaces.map((space) => (
