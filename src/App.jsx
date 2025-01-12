@@ -1,5 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
+
+// Bilder importieren
+import ani1 from './images/ani1.jpg';
+import ani2 from './images/ani2.jpg';
+import ani3 from './images/ani3.jpg';
+import ani4 from './images/ani4.jpg';
 
 const App = () => {
   const [selectedParkingSpace, setSelectedParkingSpace] = useState(null);
@@ -12,6 +18,19 @@ const App = () => {
       reservedBy: "",
     }))
   );
+  const [backgroundImage, setBackgroundImage] = useState(""); // Zustand für das Hintergrundbild
+
+  // Funktion zur Auswahl eines zufälligen Bildes
+  const getRandomImage = () => {
+    const images = [ani1, ani2, ani3, ani4];
+    const randomIndex = Math.floor(Math.random() * images.length);
+    return images[randomIndex];
+  };
+
+  // Setze das Hintergrundbild nur einmal beim ersten Rendern
+  useEffect(() => {
+    setBackgroundImage(getRandomImage()); // Bild nur beim ersten Rendern festlegen
+  }, []);
 
   const handleBooking = (id) => {
     if (!parkingSpaces[id - 1].isReserved) {
@@ -24,7 +43,7 @@ const App = () => {
       setParkingSpaces((prevSpaces) =>
         prevSpaces.map((space) =>
           space.id === selectedParkingSpace
-            ? { ...space, isReserved: true, reservedBy: name } 
+            ? { ...space, isReserved: true, reservedBy: name }
             : space
         )
       );
@@ -38,7 +57,7 @@ const App = () => {
   return (
     <div className="app">
       <header className="header">
-        <h1 className="title">Zoo<span style={{color:"red"}}>h</span>! Parkplatz-Reservierung</h1>
+        <h1 className="title">Zoo<span style={{ color: "red" }}>h</span>! Parkplatz-Reservierung</h1>
       </header>
 
       <main className="content">
@@ -88,12 +107,20 @@ const App = () => {
               type="text"
               placeholder="Geben Sie Ihren Namen ein"
               value={name}
-              onChange={(e) => setName(e.target.value)} 
+              onChange={(e) => setName(e.target.value)}
             />
             <button onClick={handleReservation}>Parkplatz reservieren</button>
           </div>
         )}
       </main>
+
+      {/* Hintergrundbild div */}
+      <div
+        className="imgs"
+        style={{
+          backgroundImage: `url(${backgroundImage})`,
+        }}
+      ></div>
     </div>
   );
 };
