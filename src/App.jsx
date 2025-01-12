@@ -124,5 +124,46 @@ const App = () => {
     </div>
   );
 };
+const handleReservation = async () => {
+  if (selectedParkingSpace !== null && name.trim() !== "") {
+    // 1. Zuerst die Reservierung an das Backend senden
+    try {
+      const response = await fetch("http://localhost:5000/reserve", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          slot: `A${selectedParkingSpace}`, // Parkplatzzahlung: A1, A2, ...
+          name: name,
+        }),
+      });
+      
+      const data = await response.json();
+      if (data.id) {
+        alert(`Reservierung erfolgreich für Parkplatz A${selectedParkingSpace}.`);
+      } else {
+        alert("Fehler bei der Reservierung.");
+      }
+    } catch (error) {
+      alert("Es gab einen Fehler bei der Verbindung zum Server.");
+      console.error(error);
+    }
+
+    // 2. Danach die Reservierung lokal im Zustand aktualisieren
+    setParkingSpaces((prevSpaces) =>
+      prevSpaces.map((space) =>
+        space.id === selectedParkingSpace
+          ? { ...space, isReserved: true, reservedBy: name } // Status als reserviert setzen
+          : space
+      )
+    );
+    setSelectedParkingSpace(null); // Auswahl zurücksetzen
+    setName(""); // Eingabefeld zurücksetzen
+  } else {
+    alert("Bitte geben Sie Ihren Namen ein.");
+  }
+};
+
 
 export default App;
