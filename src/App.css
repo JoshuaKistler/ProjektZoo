@@ -12,7 +12,7 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 1rem 2rem;
-  background-color: black;
+  background-color: #282c34;
   color: white;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
@@ -24,15 +24,15 @@ body {
 
 .parking-lot {
   display: grid;
-  grid-template-columns: repeat(5, 120px);
+  grid-template-columns: repeat(5, 180px); /* Breite bleibt gleich */
   gap: 20px;
   justify-content: center;
   margin: 50px auto;
 }
 
 .parking-space {
-  width: 120px;
-  height: 120px;
+  width: 180px; /* Breite bleibt gleich */
+  height: 250px; /* Höhe geändert, damit die Parkplätze vertikal länger sind */
   background-color: #e0e0e0;
   border: 2px solid #333;
   border-radius: 10px;
@@ -65,7 +65,10 @@ body {
 }
 
 .parking-icon {
-  font-size: 20px;
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  font-size: 18px;
   font-weight: bold;
   color: #333;
 }
