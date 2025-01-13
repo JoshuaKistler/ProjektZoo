@@ -38,17 +38,42 @@ const App = () => {
     }
   };
 
-  const handleReservation = () => {
+  const handleReservation = async () => {
     if (selectedParkingSpace !== null && name.trim() !== "") {
+      // 1. Reservierung an das Backend senden
+      try {
+        const response = await fetch("http://localhost:5000/reserve", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            parkingSpaceId: selectedParkingSpace,
+            reservedBy: name,
+          }),
+        });
+
+        const data = await response.json();
+        if (data.id) {
+          alert(`Reservierung erfolgreich für Parkplatz A${selectedParkingSpace}.`);
+        } else {
+          alert("Fehler bei der Reservierung.");
+        }
+      } catch (error) {
+        alert("Es gab einen Fehler bei der Verbindung zum Server.");
+        console.error(error);
+      }
+
+      // 2. Lokale Aktualisierung der Reservierung
       setParkingSpaces((prevSpaces) =>
         prevSpaces.map((space) =>
           space.id === selectedParkingSpace
-            ? { ...space, isReserved: true, reservedBy: name }
+            ? { ...space, isReserved: true, reservedBy: name } // Status als reserviert setzen
             : space
         )
       );
-      setSelectedParkingSpace(null);
-      setName("");
+      setSelectedParkingSpace(null); // Auswahl zurücksetzen
+      setName(""); // Eingabefeld zurücksetzen
     } else {
       alert("Bitte geben Sie Ihren Namen ein.");
     }
@@ -57,7 +82,9 @@ const App = () => {
   return (
     <div className="app">
       <header className="header">
-        <h1 className="title">Zoo<span style={{ color: "red" }}>h</span>! Parkplatz-Reservierung</h1>
+        <h1 className="title">
+          Zoo<span style={{ color: "red" }}>h</span>! Parkplatz-Reservierung
+        </h1>
       </header>
 
       <main className="content">
@@ -68,19 +95,9 @@ const App = () => {
           {parkingSpaces.map((space) => (
             <div
               key={space.id}
-              className={`parking-space ${
-                space.isReserved
-                  ? "reserved"
-                  : space.isBooked
-                  ? "booked"
-                  : selectedParkingSpace === space.id
-                  ? "selected"
-                  : ""
-              }`}
-              onClick={() => handleBooking(space.id)}
-              style={{
-                cursor: space.isReserved ? "not-allowed" : "pointer",
-              }}
+              className={`parking-space ${space.isReserved ? "reserved" : space.isBooked ? "booked" : selectedParkingSpace === space.id ? "selected" : ""}`}
+              onClick={() => handleBooking(space.id)} // Parkplatz auswählen
+              style={{ cursor: space.isReserved ? "not-allowed" : "pointer" }}
               data-name={space.isReserved ? space.reservedBy : ""}
             >
               <div className="parking-icon">
@@ -91,7 +108,7 @@ const App = () => {
                   className="reserve-button"
                   onClick={(e) => {
                     e.stopPropagation();
-                    handleBooking(space.id);
+                    handleBooking(space.id); // Parkplatz für Reservierung auswählen
                   }}
                 >
                   Buchen
@@ -118,52 +135,11 @@ const App = () => {
       <div
         className="imgs"
         style={{
-          backgroundImage: `url(${backgroundImage})`,
+          backgroundImage: `url(${backgroundImage})`, // Das zufällige Hintergrundbild setzen
         }}
       ></div>
     </div>
   );
 };
-const handleReservation = async () => {
-  if (selectedParkingSpace !== null && name.trim() !== "") {
-    // 1. Zuerst die Reservierung an das Backend senden
-    try {
-      const response = await fetch("http://localhost:5000/reserve", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          slot: `A${selectedParkingSpace}`, // Parkplatzzahlung: A1, A2, ...
-          name: name,
-        }),
-      });
-      
-      const data = await response.json();
-      if (data.id) {
-        alert(`Reservierung erfolgreich für Parkplatz A${selectedParkingSpace}.`);
-      } else {
-        alert("Fehler bei der Reservierung.");
-      }
-    } catch (error) {
-      alert("Es gab einen Fehler bei der Verbindung zum Server.");
-      console.error(error);
-    }
-
-    // 2. Danach die Reservierung lokal im Zustand aktualisieren
-    setParkingSpaces((prevSpaces) =>
-      prevSpaces.map((space) =>
-        space.id === selectedParkingSpace
-          ? { ...space, isReserved: true, reservedBy: name } // Status als reserviert setzen
-          : space
-      )
-    );
-    setSelectedParkingSpace(null); // Auswahl zurücksetzen
-    setName(""); // Eingabefeld zurücksetzen
-  } else {
-    alert("Bitte geben Sie Ihren Namen ein.");
-  }
-};
-
 
 export default App;
