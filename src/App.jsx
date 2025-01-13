@@ -37,23 +37,43 @@ const App = () => {
     fetchReservations();
   }, []);
 
+<<<<<<< HEAD
   // Handle Reservation
   const handleReservation = async () => {
     if (selectedParkingSpace !== null && name.trim() !== "") {
       try {
         const response = await fetch("http://localhost:6001/reserve", { // Ändern Sie den Port hier
+=======
+  const handleBooking = (id) => {
+    if (!parkingSpaces[id - 1].isReserved) {
+      setSelectedParkingSpace(id);
+    }
+  };
+
+  const handleReservation = async () => {
+    if (selectedParkingSpace !== null && name.trim() !== "") {
+      // 1. Reservierung an das Backend senden
+      try {
+        const response = await fetch("http://localhost:5000/reserve", {
+>>>>>>> 3b601ab2807d1a7457df8c51be6d76cdbadd2d92
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
+<<<<<<< HEAD
             slot: selectedParkingSpace, // Parkplatz-ID als Slot übergeben
             name: name, // Name des Benutzers
+=======
+            parkingSpaceId: selectedParkingSpace,
+            reservedBy: name,
+>>>>>>> 3b601ab2807d1a7457df8c51be6d76cdbadd2d92
           }),
         });
 
         const data = await response.json();
         if (data.id) {
+<<<<<<< HEAD
           alert(`Reservierung erfolgreich für Parkplatz ${data.slot}.`);
           // Lokale Aktualisierung der Parkplätze
           setParkingSpaces((prevSpaces) =>
@@ -65,6 +85,9 @@ const App = () => {
           );
           setSelectedParkingSpace(null); // Auswahl zurücksetzen
           setName(""); // Eingabefeld zurücksetzen
+=======
+          alert(`Reservierung erfolgreich für Parkplatz A${selectedParkingSpace}.`);
+>>>>>>> 3b601ab2807d1a7457df8c51be6d76cdbadd2d92
         } else {
           alert("Fehler bei der Reservierung.");
         }
@@ -72,6 +95,20 @@ const App = () => {
         alert("Es gab einen Fehler bei der Verbindung zum Server.");
         console.error(error);
       }
+<<<<<<< HEAD
+=======
+
+      // 2. Lokale Aktualisierung der Reservierung
+      setParkingSpaces((prevSpaces) =>
+        prevSpaces.map((space) =>
+          space.id === selectedParkingSpace
+            ? { ...space, isReserved: true, reservedBy: name } // Status als reserviert setzen
+            : space
+        )
+      );
+      setSelectedParkingSpace(null); // Auswahl zurücksetzen
+      setName(""); // Eingabefeld zurücksetzen
+>>>>>>> 3b601ab2807d1a7457df8c51be6d76cdbadd2d92
     } else {
       alert("Bitte geben Sie Ihren Namen ein.");
     }
@@ -93,8 +130,13 @@ const App = () => {
           {parkingSpaces.map((space) => (
             <div
               key={space.id}
+<<<<<<< HEAD
               className={`parking-space ${space.isReserved ? "reserved" : space.isBooked ? "booked" : selectedParkingSpace === space.slot ? "selected" : ""}`}
               onClick={() => !space.isReserved && setSelectedParkingSpace(space.slot)} // Parking space selection
+=======
+              className={`parking-space ${space.isReserved ? "reserved" : space.isBooked ? "booked" : selectedParkingSpace === space.id ? "selected" : ""}`}
+              onClick={() => handleBooking(space.id)} // Parkplatz auswählen
+>>>>>>> 3b601ab2807d1a7457df8c51be6d76cdbadd2d92
               style={{ cursor: space.isReserved ? "not-allowed" : "pointer" }}
               data-name={space.isReserved ? space.reservedBy : ""}
             >
@@ -106,7 +148,11 @@ const App = () => {
                   className="reserve-button"
                   onClick={(e) => {
                     e.stopPropagation();
+<<<<<<< HEAD
                     setSelectedParkingSpace(space.slot); // Select parking space for reservation
+=======
+                    handleBooking(space.id); // Parkplatz für Reservierung auswählen
+>>>>>>> 3b601ab2807d1a7457df8c51be6d76cdbadd2d92
                   }}
                 >
                   Buchen
@@ -128,8 +174,23 @@ const App = () => {
           </div>
         )}
       </main>
+<<<<<<< HEAD
+=======
+
+      {/* Hintergrundbild div */}
+      <div
+        className="imgs"
+        style={{
+          backgroundImage: `url(${backgroundImage})`, // Das zufällige Hintergrundbild setzen
+        }}
+      ></div>
+>>>>>>> 3b601ab2807d1a7457df8c51be6d76cdbadd2d92
     </div>
   );
 };
 
+<<<<<<< HEAD
 export default App;
+=======
+export default App;
+>>>>>>> 3b601ab2807d1a7457df8c51be6d76cdbadd2d92
